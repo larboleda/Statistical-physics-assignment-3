@@ -1,0 +1,131 @@
+# coding: utf-8
+
+import numpy as np
+import matplotlib.pyplot as plt
+import random 
+import sys
+import time
+
+#------ ROUTINES --------
+
+#-------------------------------------------
+# Enegía de cada microestado y energía total 
+#-------------------------------------------
+
+def all_microstates_energy(all_microstates,N):
+    t_init = time.time()
+    Etot = E = 0.0
+    Ei = []
+    for k in range(2**(N*N)):
+        
+        Emicro = 0.0
+       
+        micro = all_microstates[k]    
+        
+        for i in range(N):
+            for j in range(N):
+            
+                #valor de los spin vecinos de cada átomo en el microestado [i]
+                #con condiciones de forntera periodicas
+                ngb1 = micro[i,(j+1)%N]
+                ngb2 = micro[(i-1)%N,j]
+                ngb3 = micro[i,(j-1)%N]
+                ngb4 = micro[(i+1)%N,j]
+            
+                #print("primer vecino tiene espín %d de átomo %d"%(ngb1,j))
+                
+                Eij =  micro[i,j]*(ngb1 + ngb2 + ngb3 + ngb4)/2 # div 2 porque cada interacción se cuenta dos veces 
+                Emicro += Eij
+                
+        
+        Ei.append(Emicro)
+        Etot += Emicro
+    t_end = time.time()
+    print("Time: ",t_end-t_init)
+    return Ei, Etot
+
+
+#-------------------------------------
+# Generación de todos los microestados 
+# Posibles para un sistema de L átomos
+# L = N x N
+#--------------------------------------
+
+def define_microstates(N):
+
+    L = N*N
+
+    print("Defining microstates...")
+    
+    #number of configurations
+    n_micro = 2**L
+
+    m_prev = [-1]*L
+
+    all_microstates = [np.reshape(np.array(m_prev),(N,N))]
+    
+    for i in range(n_micro-1):
+    
+        k = 0
+    
+        m = m_prev[:]
+    
+        while m[k] == 1:
+        
+            m[k] = -1
+        
+            k = k + 1
+        
+        m[k] = 1
+    
+        m_prev = m[:]
+            
+        all_microstates.append(np.reshape(np.array(m),(N,N)))
+
+    print("Finished defining microstates")
+
+    return(all_microstates)
+
+
+#======= MAIN ============
+
+if len(sys.argv) < 2:
+    N = 4
+else:
+    N = int(sys.argv[1])
+
+print("Running with %d x %d"%(N,N))
+
+all_microstates = define_microstates(N)
+
+print("Counting energy of microstates...")
+
+Ei, Etot = all_microstates_energy(all_microstates,N)
+
+print("Finished energy of microstates...")
+
+
+#--------------------------
+# histograma de texto
+#--------------------------
+
+
+energias, OmegaE = np.unique(Ei,return_counts = True)
+for i in range(len(energias)):
+    print(energias[i],"\t",OmegaE[i])
+
+#--------------------------------------------
+# Histograma de energias de los microestados
+#--------------------------------------------
+
+n_bins = 100
+
+Omega, extrems = np.histogram(Ei, bins=n_bins, normed=False)
+
+plt.hist(Ei, bins = n_bins, histtype='bar',alpha=0.4, color ="k", lw = 1.8,label =r"Histograma %d$\times$%d"%(N,N))
+plt.xlabel(r"$E$")
+plt.ylabel(r"$\Omega(E)$")
+plt.legend()
+plt.grid()
+plt.title(r"Conteo Directo")
+plt.savefig("images/directo/histograma_%dx%d.png"%(N,N))

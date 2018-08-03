@@ -1,0 +1,77 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import random 
+import collections 
+
+
+#---------------------------------------------------------
+# Función para generar un estado de la malla arealtorio:
+# cada átomo en un estado de espin aleatorio
+#---------------------------------------------------------
+
+def initial_microstate(N):   
+    #microestado aleatorio de L átomos. L = N x N
+    state = 2*np.random.randint(2, size=(N,N))-1
+    return state
+
+#---------------------------------------------------------
+# Movidas de monte carlos usando el algoritmo Metropolis 
+# para generar o no un microestado nuevo
+#---------------------------------------------------------
+
+def monte_carlo_realization(microstate, N, beta):
+   
+    for i in range(N):
+        for j in range(N):
+            
+            #escogemos aleatoriamente la posición del 
+            #átomo (s) en la malla: (fila(a),columna(b))
+                
+            a = np.random.randint(0, N) #0 y N-1
+            b = np.random.randint(0, N)
+            
+            s =  microstate[a, b]
+                
+            #vecinos del átomo s:
+            ngb1 = microstate[a,(b+1)%N]
+            ngb2 = microstate[(a-1)%(N),b]
+            ngb3 = microstate[a,(b-1)%N]
+            ngb4 = microstate[(a+1)%(N),b]
+            
+            deltaE = 2*s*(ngb1 + ngb2 + ngb3 + ngb4)
+            
+            if deltaE < 0: #acepte con probabilidad igual 1 el cambio de espín
+                s *= -1
+            elif random.uniform(0.0,1.0) < np.exp(-deltaE*beta):
+                s *= -1
+                    
+            #cambie el espín del átomo y guardelo en su posición, 
+            #esto genera un nuevo microestado
+            microstate[a, b] = s
+                
+    return microstate
+
+#----------------------------
+# Energía de un microestado
+#----------------------------
+
+def microstate_energy(microstate, N):
+    energy = 0
+    for i in range(len(microstate)):
+        for j in range(len(microstate)):
+            #S: espín del átomo en la fila i columna j
+            S = microstate[i,j]
+            ngb1 = microstate[i,(j+1)%N]
+            ngb2 = microstate[(i-1)%N, j]
+            ngb3 = microstate[i,(j-1)%N]
+            ngb4 = microstate[(i+1)%N, j]
+            energy += -S*(ngb1 + ngb2 + ngb3 + ngb4)/2
+    return energy
+
+#---------------------------------
+# Magnetización de un microestado
+#---------------------------------
+
+def magnetization(microstate):
+    mag = np.sum(microstate)
+    return mag

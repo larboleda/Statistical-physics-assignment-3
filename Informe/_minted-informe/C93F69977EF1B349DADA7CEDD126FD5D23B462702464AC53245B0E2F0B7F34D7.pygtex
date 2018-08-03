@@ -1,0 +1,165 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{c+c1}{\PYGZsh{} Función para generar un estado de la malla aleatorio:}
+\PYG{c+c1}{\PYGZsh{} cada átomo en un estado de espín aleatorio}
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+\PYG{k}{def} \PYG{n+nf}{initial\PYGZus{}microstate}\PYG{p}{(}\PYG{n}{N}\PYG{p}{):}
+    \PYG{c+c1}{\PYGZsh{}microestado aleatorio de L átomos. L = N x N}
+    \PYG{n}{state} \PYG{o}{=} \PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{np}\PYG{o}{.}\PYG{n}{random}\PYG{o}{.}\PYG{n}{randint}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{n}{size}\PYG{o}{=}\PYG{p}{(}\PYG{n}{N}\PYG{p}{,}\PYG{n}{N}\PYG{p}{))}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}
+    \PYG{k}{return} \PYG{n}{state}
+
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{c+c1}{\PYGZsh{} Movidas de monte carlos usando el algoritmo Metropolis}
+\PYG{c+c1}{\PYGZsh{} para generar o no un microestado nuevo}
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+\PYG{k}{def} \PYG{n+nf}{monte\PYGZus{}carlo\PYGZus{}realization}\PYG{p}{(}\PYG{n}{microstate}\PYG{p}{,} \PYG{n}{N}\PYG{p}{,} \PYG{n}{beta}\PYG{p}{):}
+
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{N}\PYG{p}{):}
+        \PYG{k}{for} \PYG{n}{j} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{N}\PYG{p}{):}
+
+            \PYG{c+c1}{\PYGZsh{}escogemos aleatoriamente la posición del}
+            \PYG{c+c1}{\PYGZsh{}átomo (s) en la malla: (fila(a),columna(b))}
+
+            \PYG{n}{a} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{random}\PYG{o}{.}\PYG{n}{randint}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{N}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{}0 y N\PYGZhy{}1}
+            \PYG{n}{b} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{random}\PYG{o}{.}\PYG{n}{randint}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{N}\PYG{p}{)}
+
+            \PYG{n}{s} \PYG{o}{=}  \PYG{n}{microstate}\PYG{p}{[}\PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{]}
+
+            \PYG{c+c1}{\PYGZsh{}vecinos del átomo s:}
+            \PYG{n}{ngb1} \PYG{o}{=} \PYG{n}{microstate}\PYG{p}{[}\PYG{n}{a}\PYG{p}{,(}\PYG{n}{b}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{N}\PYG{p}{]}
+            \PYG{n}{ngb2} \PYG{o}{=} \PYG{n}{microstate}\PYG{p}{[(}\PYG{n}{a}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{p}{(}\PYG{n}{N}\PYG{p}{),}\PYG{n}{b}\PYG{p}{]}
+            \PYG{n}{ngb3} \PYG{o}{=} \PYG{n}{microstate}\PYG{p}{[}\PYG{n}{a}\PYG{p}{,(}\PYG{n}{b}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{N}\PYG{p}{]}
+            \PYG{n}{ngb4} \PYG{o}{=} \PYG{n}{microstate}\PYG{p}{[(}\PYG{n}{a}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{p}{(}\PYG{n}{N}\PYG{p}{),}\PYG{n}{b}\PYG{p}{]}
+
+            \PYG{n}{deltaE} \PYG{o}{=} \PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{s}\PYG{o}{*}\PYG{p}{(}\PYG{n}{ngb1} \PYG{o}{+} \PYG{n}{ngb2} \PYG{o}{+} \PYG{n}{ngb3} \PYG{o}{+} \PYG{n}{ngb4}\PYG{p}{)}
+
+            \PYG{k}{if} \PYG{n}{deltaE} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{0}\PYG{p}{:} \PYG{c+c1}{\PYGZsh{}acepte con probabilidad igual 1 el cambio de espín}
+                \PYG{n}{s} \PYG{o}{*=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}
+            \PYG{k}{elif} \PYG{n}{random}\PYG{o}{.}\PYG{n}{uniform}\PYG{p}{(}\PYG{l+m+mf}{0.0}\PYG{p}{,}\PYG{l+m+mf}{1.0}\PYG{p}{)} \PYG{o}{\PYGZlt{}} \PYG{n}{np}\PYG{o}{.}\PYG{n}{exp}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{n}{deltaE}\PYG{o}{*}\PYG{n}{beta}\PYG{p}{):}
+                \PYG{n}{s} \PYG{o}{*=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}
+
+            \PYG{c+c1}{\PYGZsh{}cambie el espín del átomo y guardelo en su posición,}
+            \PYG{c+c1}{\PYGZsh{}esto genera un nuevo microestado}
+            \PYG{n}{microstate}\PYG{p}{[}\PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{]} \PYG{o}{=} \PYG{n}{s}
+
+    \PYG{k}{return} \PYG{n}{microstate}
+
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{c+c1}{\PYGZsh{} Energía de un microestado}
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+\PYG{k}{def} \PYG{n+nf}{microstate\PYGZus{}energy}\PYG{p}{(}\PYG{n}{microstate}\PYG{p}{,} \PYG{n}{N}\PYG{p}{):}
+    \PYG{n}{energy} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{microstate}\PYG{p}{)):}
+        \PYG{k}{for} \PYG{n}{j} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{microstate}\PYG{p}{)):}
+            \PYG{c+c1}{\PYGZsh{}S: espín del átomo en la fila i columna j}
+            \PYG{n}{S} \PYG{o}{=} \PYG{n}{microstate}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,}\PYG{n}{j}\PYG{p}{]}
+            \PYG{n}{ngb1} \PYG{o}{=} \PYG{n}{microstate}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,(}\PYG{n}{j}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{N}\PYG{p}{]}
+            \PYG{n}{ngb2} \PYG{o}{=} \PYG{n}{microstate}\PYG{p}{[(}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{N}\PYG{p}{,} \PYG{n}{j}\PYG{p}{]}
+            \PYG{n}{ngb3} \PYG{o}{=} \PYG{n}{microstate}\PYG{p}{[}\PYG{n}{i}\PYG{p}{,(}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{N}\PYG{p}{]}
+            \PYG{n}{ngb4} \PYG{o}{=} \PYG{n}{microstate}\PYG{p}{[(}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{N}\PYG{p}{,} \PYG{n}{j}\PYG{p}{]}
+            \PYG{n}{energy} \PYG{o}{+=} \PYG{o}{\PYGZhy{}}\PYG{n}{S}\PYG{o}{*}\PYG{p}{(}\PYG{n}{ngb1} \PYG{o}{+} \PYG{n}{ngb2} \PYG{o}{+} \PYG{n}{ngb3} \PYG{o}{+} \PYG{n}{ngb4}\PYG{p}{)}\PYG{o}{/}\PYG{l+m+mi}{2}
+    \PYG{k}{return} \PYG{n}{energy}
+
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{c+c1}{\PYGZsh{} Magnetización de un microestado}
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+\PYG{k}{def} \PYG{n+nf}{magnetization}\PYG{p}{(}\PYG{n}{microstate}\PYG{p}{):}
+    \PYG{n}{mag} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{sum}\PYG{p}{(}\PYG{n}{microstate}\PYG{p}{)}
+    \PYG{k}{return} \PYG{n}{mag}
+
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{c+c1}{\PYGZsh{} parámetros para las pruebas}
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{c+c1}{\PYGZsh{}tamaño de la malla: L = N x N}
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+\PYG{n}{N} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mi}{6}\PYG{p}{,}\PYG{l+m+mi}{32}\PYG{p}{,}\PYG{l+m+mi}{128}\PYG{p}{]}
+
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{c+c1}{\PYGZsh{} Temperatura fija}
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+\PYG{n}{T} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mf}{0.1}\PYG{p}{,}\PYG{l+m+mf}{1.0}\PYG{p}{,}\PYG{l+m+mf}{2.269}\PYG{p}{,}\PYG{l+m+mf}{5.0}\PYG{p}{]}
+
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{c+c1}{\PYGZsh{}pasos de monte carlo}
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+\PYG{n}{n\PYGZus{}steps} \PYG{o}{=} \PYG{l+m+mi}{10000}
+
+\PYG{k}{for} \PYG{n}{k} \PYG{o+ow}{in} \PYG{n}{N}\PYG{p}{:}
+
+    \PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+    \PYG{c+c1}{\PYGZsh{}fijar configuración inicial para una T fija}
+    \PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+    \PYG{n}{Microstate} \PYG{o}{=} \PYG{n}{initial\PYGZus{}microstate}\PYG{p}{(}\PYG{n}{k}\PYG{p}{)}
+
+    \PYG{k}{for} \PYG{n}{j} \PYG{o+ow}{in} \PYG{n}{T}\PYG{p}{:}
+
+         \PYG{n}{E} \PYG{o}{=} \PYG{p}{[]}
+         \PYG{n}{M} \PYG{o}{=} \PYG{p}{[]}
+         \PYG{n}{t\PYGZus{}steps} \PYG{o}{=} \PYG{p}{[]}
+         \PYG{n}{E\PYGZus{}cumulative} \PYG{o}{=} \PYG{p}{[]}
+         \PYG{n}{E\PYGZus{}cum} \PYG{o}{=} \PYG{l+m+mf}{0.0}
+
+         \PYG{n}{beta} \PYG{o}{=} \PYG{l+m+mi}{1}\PYG{o}{/}\PYG{n}{j}
+
+         \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{n\PYGZus{}steps}\PYG{p}{):}
+
+            \PYG{n}{monte\PYGZus{}carlo\PYGZus{}realization}\PYG{p}{(}\PYG{n}{Microstate}\PYG{p}{,} \PYG{n}{k}\PYG{p}{,} \PYG{n}{beta}\PYG{p}{)}
+
+            \PYG{c+c1}{\PYGZsh{}energía}
+            \PYG{n}{Ene} \PYG{o}{=} \PYG{n}{microstate\PYGZus{}energy}\PYG{p}{(}\PYG{n}{Microstate}\PYG{p}{,} \PYG{n}{k}\PYG{p}{)}
+
+            \PYG{c+c1}{\PYGZsh{}magnetización}
+            \PYG{n}{Mag} \PYG{o}{=} \PYG{n}{magnetization}\PYG{p}{(}\PYG{n}{Microstate}\PYG{p}{)}
+
+            \PYG{c+c1}{\PYGZsh{}guardamos solo los valores del muestreo}
+            \PYG{c+c1}{\PYGZsh{}respresentativo correspondientes}
+            \PYG{c+c1}{\PYGZsh{}a la relajación del sistema: equilibrio}
+
+            \PYG{k}{if} \PYG{n}{i}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{n\PYGZus{}steps}\PYG{o}{/}\PYG{l+m+mi}{3}\PYG{p}{):}
+                \PYG{n}{t\PYGZus{}steps}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{i}\PYG{p}{)}
+                \PYG{n}{E}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{Ene}\PYG{p}{)}
+                \PYG{n}{M}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{Mag}\PYG{p}{)}
+                \PYG{n}{E\PYGZus{}cum} \PYG{o}{=}  \PYG{n}{E\PYGZus{}cum} \PYG{o}{+} \PYG{n}{Ene}
+                \PYG{n}{E\PYGZus{}cumulative}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{E\PYGZus{}cum}\PYG{o}{/}\PYG{p}{(}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{))}
+
+         \PYG{n}{Emean} \PYG{o}{=} \PYG{n+nb}{sum}\PYG{p}{(}\PYG{n}{E}\PYG{p}{)}\PYG{o}{/}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{E}\PYG{p}{)}
+         \PYG{k}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Energía media }\PYG{l+s+se}{\PYGZbs{}t}\PYG{l+s+s2}{ = }\PYG{l+s+si}{\PYGZpc{}f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{\PYGZpc{}}\PYG{n}{Emean}\PYG{p}{)}
+
+         \PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+         \PYG{c+c1}{\PYGZsh{}archivo de datos}
+         \PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+         \PYG{n}{f} \PYG{o}{=} \PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}datos\PYGZus{}tfix\PYGZus{}nfix/}\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s+s1}{x}\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s+s1}{\PYGZus{}T}\PYG{l+s+si}{\PYGZpc{}0.1f}\PYG{l+s+s1}{\PYGZus{}nsteps}\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s+s1}{.dat\PYGZsq{}}\PYG{o}{\PYGZpc{}}\PYG{p}{(}\PYG{n}{k}\PYG{p}{,}\PYG{n}{k}\PYG{p}{,}\PYG{n}{j}\PYG{p}{,}\PYG{n}{n\PYGZus{}steps}\PYG{p}{),}\PYG{l+s+s1}{\PYGZsq{}w\PYGZsq{}}\PYG{p}{)}
+
+         \PYG{k}{for} \PYG{n}{p} \PYG{o+ow}{in} \PYG{n+nb}{range} \PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{E}\PYG{p}{)):}
+             \PYG{n}{f}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s+s2}{ }\PYG{l+s+si}{\PYGZpc{}.8f}\PYG{l+s+s2}{ }\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s+s2}{ }\PYG{l+s+si}{\PYGZpc{}.8f}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{\PYGZpc{}}\PYG{p}{(}\PYG{n}{t\PYGZus{}steps}\PYG{p}{[}\PYG{n}{p}\PYG{p}{],} \PYG{n}{E}\PYG{p}{[}\PYG{n}{p}\PYG{p}{],} \PYG{n}{M}\PYG{p}{[}\PYG{n}{p}\PYG{p}{],} \PYG{n}{E\PYGZus{}cumulative}\PYG{p}{[}\PYG{n}{p}\PYG{p}{]))}
+         \PYG{n}{f}\PYG{o}{.}\PYG{n}{close}\PYG{p}{()}
+
+         \PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+         \PYG{c+c1}{\PYGZsh{}graficas snap final}
+         \PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+         \PYG{n}{plt}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{Microstate}\PYG{p}{)}
+
+         \PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+         \PYG{c+c1}{\PYGZsh{}graficas E vs t\PYGZus{}steps}
+         \PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+         \PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{t\PYGZus{}steps}\PYG{p}{,}\PYG{n}{E}\PYG{p}{)}
+
+         \PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+         \PYG{c+c1}{\PYGZsh{}graficas E\PYGZus{}cum vs t\PYGZus{}steps}
+         \PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+         \PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{t\PYGZus{}steps}\PYG{p}{,}\PYG{n}{E\PYGZus{}cumulative}\PYG{p}{)}
+\end{Verbatim}

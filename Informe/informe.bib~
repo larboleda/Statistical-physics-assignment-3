@@ -1,0 +1,25 @@
+@book{krauth2006,
+  title={Statistical mechanics: algorithms and computations},
+  author={Krauth, Werner},
+  volume=13,
+  year=2006,
+  publisher={OUP Oxford}
+}
+
+@book{greiner2012,
+  title={Thermodynamics and statistical mechanics},
+  author={Greiner, Walter and Neise, Ludwig and St{\"o}cker, Horst},
+  year=2012,
+  publisher={Springer Science \& Business Media}
+}
+
+
+@article{hilker1995,
+  title={Metallicities in the Magellanic Clouds from CCD Stroemgren photometry},
+    author={Hilker, MICHAEL and Richtler, T and Gieren, W},
+      journal={Astronomy and Astrophysics},
+        volume=294,
+	  pages={648--656},
+	    year=1995
+	    }
+

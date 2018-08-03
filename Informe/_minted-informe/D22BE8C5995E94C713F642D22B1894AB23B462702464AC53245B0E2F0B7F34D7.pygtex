@@ -1,0 +1,84 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{c+c1}{\PYGZsh{}tamaño de la malla: L = N x N}
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+\PYG{n}{N} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{,}\PYG{l+m+mi}{4}\PYG{p}{,}\PYG{l+m+mi}{8}\PYG{p}{,}\PYG{l+m+mi}{16}\PYG{p}{,}\PYG{l+m+mi}{64}\PYG{p}{]}
+
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{c+c1}{\PYGZsh{} Temperatura fija}
+\PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+\PYG{n}{Tc} \PYG{o}{=} \PYG{l+m+mf}{2.269}
+\PYG{n}{Betac} \PYG{o}{=} \PYG{l+m+mf}{0.4407}
+
+\PYG{n}{n\PYGZus{}steps} \PYG{o}{=} \PYG{l+m+mi}{4000}
+
+\PYG{n}{T} \PYG{o}{=}\PYG{n}{np}\PYG{o}{.}\PYG{n}{arange}\PYG{p}{(}\PYG{l+m+mf}{0.05}\PYG{p}{,}\PYG{l+m+mi}{4}\PYG{p}{,}\PYG{l+m+mf}{0.1}\PYG{p}{)}
+
+\PYG{n}{nt} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{size}\PYG{p}{(}\PYG{n}{T}\PYG{p}{)}
+
+\PYG{n}{n\PYGZus{}bins} \PYG{o}{=} \PYG{l+m+mi}{100}
+
+\PYG{n}{E\PYGZus{}mean}         \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{nt}\PYG{p}{)}
+\PYG{n}{E2\PYGZus{}mean}        \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{nt}\PYG{p}{)}
+\PYG{n}{Magnetization}  \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{nt}\PYG{p}{)}
+\PYG{n}{SpecificHeat}   \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n}{nt}\PYG{p}{)}
+
+\PYG{n}{SpecificHeat\PYGZus{}arr} \PYG{o}{=} \PYG{p}{[]}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{n}{figsize}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{10}\PYG{p}{,}\PYG{l+m+mi}{8}\PYG{p}{))}
+\PYG{k}{for} \PYG{n}{j} \PYG{o+ow}{in} \PYG{n}{N}\PYG{p}{:}
+
+    \PYG{n}{Microstate} \PYG{o}{=} \PYG{n}{initial\PYGZus{}microstate}\PYG{p}{(}\PYG{n}{j}\PYG{p}{)}
+
+    \PYG{k}{for} \PYG{n}{k} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{T}\PYG{p}{)):}
+
+        \PYG{n}{E} \PYG{o}{=} \PYG{p}{[]}
+        \PYG{n}{M} \PYG{o}{=} \PYG{p}{[]}
+        \PYG{n}{all\PYGZus{}E} \PYG{o}{=} \PYG{p}{[]}
+
+        \PYG{n}{beta}\PYG{o}{=}\PYG{l+m+mf}{1.0}\PYG{o}{/}\PYG{n}{T}\PYG{p}{[}\PYG{n}{k}\PYG{p}{];} \PYG{n}{beta2}\PYG{o}{=}\PYG{n}{beta}\PYG{o}{**}\PYG{l+m+mi}{2}
+
+        \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{n\PYGZus{}steps}\PYG{p}{):}
+
+
+            \PYG{n}{monte\PYGZus{}carlo\PYGZus{}realization}\PYG{p}{(}\PYG{n}{Microstate}\PYG{p}{,}\PYG{n}{j}\PYG{p}{,} \PYG{n}{beta}\PYG{p}{)}
+
+            \PYG{c+c1}{\PYGZsh{}energía}
+            \PYG{n}{Ene} \PYG{o}{=} \PYG{n}{microstate\PYGZus{}energy}\PYG{p}{(}\PYG{n}{Microstate}\PYG{p}{,}\PYG{n}{j}\PYG{p}{)}
+
+            \PYG{c+c1}{\PYGZsh{}magnetización}
+            \PYG{n}{Mag} \PYG{o}{=} \PYG{n}{magnetization}\PYG{p}{(}\PYG{n}{Microstate}\PYG{p}{)}
+
+            \PYG{n}{all\PYGZus{}E}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{Ene}\PYG{p}{)}
+
+            \PYG{k}{if} \PYG{n}{i}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{n\PYGZus{}steps}\PYG{o}{/}\PYG{l+m+mi}{3}\PYG{p}{):}
+                \PYG{n}{E}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{Ene}\PYG{p}{)}
+                \PYG{n}{M}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{Mag}\PYG{p}{)}
+
+        \PYG{n}{E\PYGZus{}mean}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]}            \PYG{o}{=} \PYG{n+nb}{sum}\PYG{p}{(}\PYG{n}{E}\PYG{p}{)}\PYG{o}{/}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{E}\PYG{p}{)}
+        \PYG{n}{E2\PYGZus{}mean}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]}           \PYG{o}{=} \PYG{n+nb}{sum}\PYG{p}{(}\PYG{n}{p}\PYG{o}{**}\PYG{l+m+mi}{2} \PYG{k}{for} \PYG{n}{p} \PYG{o+ow}{in} \PYG{n}{E}\PYG{p}{)}\PYG{o}{/}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{E}\PYG{p}{)}
+        \PYG{n}{SpecificHeat}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]}      \PYG{o}{=} \PYG{p}{(}\PYG{n}{beta2}\PYG{o}{/}\PYG{n}{j}\PYG{p}{)}\PYG{o}{*}\PYG{p}{(}\PYG{n}{E2\PYGZus{}mean}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{p}{(}\PYG{n}{E\PYGZus{}mean}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]}\PYG{o}{**}\PYG{l+m+mi}{2}\PYG{p}{))}
+        \PYG{n}{Magnetization}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]}     \PYG{o}{=} \PYG{n+nb}{sum}\PYG{p}{(}\PYG{n}{M}\PYG{p}{)}\PYG{o}{/}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{M}\PYG{p}{)}
+
+
+    \PYG{n}{SpecificHeat\PYGZus{}arr}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{SpecificHeat}\PYG{o}{.}\PYG{n}{copy}\PYG{p}{())}
+
+    \PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+    \PYG{c+c1}{\PYGZsh{}graficas individuales}
+    \PYG{c+c1}{\PYGZsh{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+
+    \PYG{c+c1}{\PYGZsh{}energía vs T}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{T}\PYG{p}{,} \PYG{n}{E\PYGZus{}mean}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{}magnetización vs T}
+
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{T}\PYG{p}{,} \PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{Magnetization}\PYG{p}{))}
+
+
+\PYG{c+c1}{\PYGZsh{}grafica calor específico: todos los tamaños}
+
+\PYG{k}{for} \PYG{n}{j} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{N}\PYG{p}{)):}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n}{T}\PYG{p}{,} \PYG{n}{SpecificHeat\PYGZus{}arr}\PYG{p}{[}\PYG{n}{j}\PYG{p}{],} \PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{p}{,} \PYG{n}{label}\PYG{o}{=}\PYG{l+s+sa}{r}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s+s2}{ \PYGZdl{}\PYGZbs{}times\PYGZdl{} }\PYG{l+s+si}{\PYGZpc{}d}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{\PYGZpc{}}\PYG{p}{(}\PYG{n}{N}\PYG{p}{[}\PYG{n}{j}\PYG{p}{],}\PYG{n}{N}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]))}
+\end{Verbatim}
